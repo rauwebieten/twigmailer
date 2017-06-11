@@ -5,7 +5,7 @@ Send mails with PHPMailer and a Twig template.
 - Uses a PHPMailer instance for sending the mail
 - Uses a Twig Environment to render templates
 - Creates a text version from the HTML version
-- If CSS files are found in de HTML, they are loaded and converted to inline styles
+- If linked CSS files are found in the HTML, they are loaded and converted to inline styles
 - Sets the subject from the HTML title tag
 
 # Installation
