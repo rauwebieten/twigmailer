@@ -21,39 +21,39 @@ composer require rauwebieten/twigmailer
 Make sure you have a configured PHPMailer instance. 
 Check the PHPMailer documentation for details.
 
-`
+```php
 $loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/templates');  
 $twig = new \Twig\Environment($loader);
-`
+```
 
 Make sure you have a configured Twig Environment instance.
 Check the Twig documentation for details.
 
-`
-$phpMailer = new \PHPMailer();  
-$phpMailer->Mailer = 'mail';  
+```php
+$phpMailer = new \PHPMailer();
+$phpMailer->Mailer = 'mail';
 $phpMailer->setFrom('me@example.com', 'Me');
-`
+```
 
 Create a TwigMailer instance
 
-`
+```php
 $mailer = new \RauweBieten\TwigMailer\TwigMailer($phpMailer, $twig);
-`
+```
 
 Create content from the template
 
-`
-$mailer->create('some-template.html.twig', [  
-    'some-variable' => 'Some value'  
+```php
+$mailer->create('some-template.html.twig', [
+    'some-variable' => 'Some value'
 ]);
-`
+```
 
 And send the mail
 
-`
+```php
 $mailer->send('someone@example.com', 'Someone');
-`
+```
 
 
 
