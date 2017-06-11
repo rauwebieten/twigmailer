@@ -22,7 +22,7 @@ Make sure you have a configured PHPMailer instance.
 Check the PHPMailer documentation for details.
 
 `
-$loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/templates');
+$loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/templates');  
 $twig = new \Twig\Environment($loader);
 `
 
@@ -30,8 +30,8 @@ Make sure you have a configured Twig Environment instance.
 Check the Twig documentation for details.
 
 `
-$phpMailer = new \PHPMailer();
-$phpMailer->Mailer = 'mail';
+$phpMailer = new \PHPMailer();  
+$phpMailer->Mailer = 'mail';  
 $phpMailer->setFrom('me@example.com', 'Me');
 `
 
@@ -44,8 +44,8 @@ $mailer = new \RauweBieten\TwigMailer\TwigMailer($phpMailer, $twig);
 Create content from the template
 
 `
-$mailer->create('some-template.html.twig', [
-    'some-variable' => 'Some value'
+$mailer->create('some-template.html.twig', [  
+    'some-variable' => 'Some value'  
 ]);
 `
 
