@@ -115,20 +115,11 @@ class TwigMailer
         return $this->phpMailer;
     }
 
-    public function send($email, $name = null)
+    public function send()
     {
-        $this->phpMailer->clearAllRecipients();
-        $this->phpMailer->addAddress($email, $name);
-
         $res = $this->phpMailer->send();
         if (!$res) {
             throw new \Exception("PHPMailer::send failed: ".$this->phpMailer->ErrorInfo);
         }
-    }
-
-    public function createAndSend($email, $name = null, $template, $variables = [])
-    {
-        $this->create($template, $variables);
-        $this->send($email, $name);
     }
 }
