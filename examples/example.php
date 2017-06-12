@@ -23,4 +23,5 @@ $mailer->create('welcome.html.twig', [
 ]);
 
 // send!
-$mailer->send('someone@example.com');
+$mailer->getPhpMailer()->addAddress('someone@example.com', 'Someone');
+$mailer->send();

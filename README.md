@@ -52,7 +52,8 @@ $mailer->create('some-template.html.twig', [
 And send the mail
 
 ```php
-$mailer->send('someone@example.com', 'Someone');
+$mailer->getPhpMailer()->addAddress('someone@example.com', 'Someone');
+$mailer->send();
 ```
 
 
