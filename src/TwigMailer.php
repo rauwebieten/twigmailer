@@ -5,7 +5,6 @@ namespace RauweBieten\TwigMailer;
 use Html2Text\Html2Text;
 use Pelago\Emogrifier;
 use Symfony\Component\DomCrawler\Crawler;
-use Twig\Environment;
 use Wa72\HtmlPageDom\HtmlPage;
 
 class TwigMailer
@@ -32,12 +31,12 @@ class TwigMailer
     }
 
     /**
-     * @var Environment
+     * @var \Twig_Environment
      */
     private $twigEnvironment;
 
     /**
-     * @return Environment
+     * @return \Twig_Environment
      */
     public function getTwigEnvironment()
     {
@@ -45,7 +44,7 @@ class TwigMailer
     }
 
     /**
-     * @param Environment $twigEnvironment
+     * @param \Twig_Environment $twigEnvironment
      */
     public function setTwigEnvironment($twigEnvironment)
     {
@@ -74,7 +73,7 @@ class TwigMailer
         $this->assetFolder = $assetFolder;
     }
 
-    public function __construct(\PHPMailer $phpMailer, Environment $twigEnvironment)
+    public function __construct(\PHPMailer $phpMailer, \Twig_Environment $twigEnvironment)
     {
         $this->setPhpMailer($phpMailer);
         $this->setTwigEnvironment($twigEnvironment);
