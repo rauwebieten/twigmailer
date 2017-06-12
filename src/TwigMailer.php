@@ -25,7 +25,7 @@ class TwigMailer
     /**
      * @param \PHPMailer $phpMailer
      */
-    public function setPhpMailer($phpMailer)
+    public function setPhpMailer(\PHPMailer $phpMailer)
     {
         $this->phpMailer = $phpMailer;
     }
@@ -46,7 +46,7 @@ class TwigMailer
     /**
      * @param \Twig_Environment $twigEnvironment
      */
-    public function setTwigEnvironment($twigEnvironment)
+    public function setTwigEnvironment(\Twig_Environment $twigEnvironment)
     {
         $this->twigEnvironment = $twigEnvironment;
     }
