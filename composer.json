@@ -2,7 +2,7 @@
   "name": "rauwebieten/twigmailer",
   "require": {
     "php": "^7.1|^8.0",
-    "phpmailer/phpmailer": "^5.2|^6.0",
+    "phpmailer/phpmailer": "^6.0",
     "twig/twig": "^2.0|^3.0",
     "pelago/emogrifier": "*",
     "html2text/html2text": "^4.1",
