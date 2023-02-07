@@ -1,12 +1,12 @@
 {
   "name": "rauwebieten/twigmailer",
   "require": {
-    "php": ">=5.4.0",
-    "phpmailer/phpmailer": "^5.2",
-    "twig/twig": "^1.0",
-    "pelago/emogrifier": "^1.2",
+    "php": "^7.1|^8.0",
+    "phpmailer/phpmailer": "^5.2|^6.0",
+    "twig/twig": "^2.0|^3.0",
+    "pelago/emogrifier": "*",
     "html2text/html2text": "^4.1",
-    "wa72/htmlpagedom": "^1.3"
+    "wa72/htmlpagedom": "^2.0|^3.0"
   },
   "autoload": {
     "psr-4": {

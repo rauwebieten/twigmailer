@@ -1,57 +1,69 @@
 <?php
+
 namespace RauweBieten\TwigMailer;
 
 
 use Html2Text\Html2Text;
-use Pelago\Emogrifier;
+use Pelago\Emogrifier\CssInliner;
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\PHPMailer;
+use Symfony\Component\CssSelector\Exception\ParseException;
 use Symfony\Component\DomCrawler\Crawler;
+use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 use Wa72\HtmlPageDom\HtmlPage;
 
 class TwigMailer
 {
     /**
-     * @var \PHPMailer
+     * @var PHPMailer
      */
     private $phpMailer;
+    /**
+     * @var Environment
+     */
+    private $twigEnvironment;
+    private $assetFolder;
+
+    public function __construct(PHPMailer $phpMailer, Environment $twigEnvironment)
+    {
+        $this->setPhpMailer($phpMailer);
+        $this->setTwigEnvironment($twigEnvironment);
+    }
 
     /**
-     * @return \PHPMailer
+     * @return PHPMailer
      */
-    public function getPhpMailer()
+    public function getPhpMailer(): PHPMailer
     {
         return $this->phpMailer;
     }
 
     /**
-     * @param \PHPMailer $phpMailer
+     * @param PHPMailer $phpMailer
      */
-    public function setPhpMailer(\PHPMailer $phpMailer)
+    public function setPhpMailer(PHPMailer $phpMailer)
     {
         $this->phpMailer = $phpMailer;
     }
 
     /**
-     * @var \Twig_Environment
+     * @return Environment
      */
-    private $twigEnvironment;
-
-    /**
-     * @return \Twig_Environment
-     */
-    public function getTwigEnvironment()
+    public function getTwigEnvironment(): Environment
     {
         return $this->twigEnvironment;
     }
 
     /**
-     * @param \Twig_Environment $twigEnvironment
+     * @param Environment $twigEnvironment
      */
-    public function setTwigEnvironment(\Twig_Environment $twigEnvironment)
+    public function setTwigEnvironment(Environment $twigEnvironment)
     {
         $this->twigEnvironment = $twigEnvironment;
     }
-
-    private $assetFolder;
 
     /**
      * @return mixed
@@ -73,13 +85,14 @@ class TwigMailer
         $this->assetFolder = $assetFolder;
     }
 
-    public function __construct(\PHPMailer $phpMailer, \Twig_Environment $twigEnvironment)
-    {
-        $this->setPhpMailer($phpMailer);
-        $this->setTwigEnvironment($twigEnvironment);
-    }
-
-    public function create($template, $variables = [])
+    /**
+     * @throws Exception
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     * @throws ParseException
+     */
+    public function create($template, $variables = []): PHPMailer
     {
         $this->phpMailer->clearAllRecipients();
         $this->phpMailer->clearAttachments();
@@ -94,20 +107,19 @@ class TwigMailer
         $me = $this;
 
         $links = $page->filter('link[rel="stylesheet"]');
-        $links->each(function(Crawler $node) use($me, &$css) {
+        $links->each(function (Crawler $node) use ($me, &$css) {
             $path = $me->assetFolder . '/' . $node->attr('href');
             $content = file_get_contents($path);
-            $css.= "\n\n" . $content;
+            $css .= "\n\n" . $content;
         });
         $links->remove();
         $html = $page->save();
 
         // make css inline
-        $emogrifier = new Emogrifier($html, $css);
-        $html = $emogrifier->emogrify();
+        $html = CssInliner::fromHtml($html)->inlineCss($css)->render();
 
         // set content
-        $this->phpMailer->msgHTML($html,$this->assetFolder);
+        $this->phpMailer->msgHTML($html, $this->assetFolder);
 
         // set alt content
         $this->phpMailer->AltBody = (new Html2Text($html))->getText();
@@ -115,11 +127,14 @@ class TwigMailer
         return $this->phpMailer;
     }
 
+    /**
+     * @throws Exception
+     */
     public function send()
     {
         $res = $this->phpMailer->send();
         if (!$res) {
-            throw new \Exception("PHPMailer::send failed: ".$this->phpMailer->ErrorInfo);
+            throw new \Exception("PHPMailer::send failed: " . $this->phpMailer->ErrorInfo);
         }
     }
 }
